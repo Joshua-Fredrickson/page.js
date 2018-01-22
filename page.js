@@ -614,7 +614,7 @@ pathToRegexp_1.tokensToRegExp = tokensToRegExp_1;
 
   Page.prototype.back = function(path, state) {
     if (this.len > 0) {
-      var window = this.window;
+      var window = this._window;
       // this may need more testing to see if all browsers
       // wait for the next tick to go back in history
       hasHistory && window.history.back();
@@ -949,6 +949,24 @@ pathToRegexp_1.tokensToRegExp = tokensToRegExp_1;
     pageFn.sameOrigin = pageInstance.sameOrigin.bind(pageInstance);
 
     pageFn.create = createPage;
+
+    Object.defineProperty(pageFn, 'len', {
+      get: function(){
+        return pageInstance.len;
+      },
+      set: function(val) {
+        pageInstance.len = val;
+      }
+    });
+
+    Object.defineProperty(pageFn, 'current', {
+      get: function(){
+        return pageInstance.current;
+      },
+      set: function(val) {
+        pageInstance.current = val;
+      }
+    });
 
     // In 2.0 these can be named exports
     pageFn.Context = Context;
